@@ -12,3 +12,13 @@ export const getHomeCategories = async () => {
     })
     return result.data
 }
+
+export const getHomeHotList = async page => {
+    const result = await request.get({
+        url: '/home/houselist',
+        params: {
+            page
+        }
+    })
+    return result.data
+}

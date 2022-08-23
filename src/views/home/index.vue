@@ -1,15 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import Search from './components/search.vue'
-
+import Categories from './components/categories.vue'
+import HotList from './components/hot-list.vue'
 
 import { useHomeStore } from '@/stores/modules/home'
 const homeStore = useHomeStore()
 
-// 请求热门城市数据
+// 首页数据初始化
 homeStore.getHotCity()
 homeStore.getCategories()
+homeStore.getHotList()
 </script>
 
 <template>
@@ -17,7 +19,10 @@ homeStore.getCategories()
   <div class="banner">
     <img src="@/assets/img/home/banner.webp" alt="" />
   </div>
-  <Search  />
+  <Search />
+  <Categories />
+  <HotList />
+  <button @click="homeStore.getHotList()">++</button>
 </template>
 
 <style scoped lang="less">

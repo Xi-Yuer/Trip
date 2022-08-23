@@ -92,8 +92,13 @@ const start = ref()
 const end = ref()
 const onConfirm = date => {
   const [startTime, endTime] = date
+
+  startDate.value = formartMonthDay(startTime)
+  leaveDate.value = formartMonthDay(endTime)
+
   start.value = startTime
   end.value = endTime
+  
   stayTime.value = getDiffDate(startTime, endTime) // 计算停留时间 单位/天
   show.value = false
 }
