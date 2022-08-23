@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
@@ -20,6 +20,28 @@ const indexList = computed(() => {
 
 // 搜索
 const searchValue = ref('')
+const searchCityInfo = reactive({
+  city: {},
+  group: '',
+})
+// 检索城市
+watch(
+  () => searchValue.value,
+  (newVlue, oldValue) => {
+    currentCityGroup.value.cities.map((item, index) => {
+      item.cities.map(iten => {
+        if (newVlue === iten.cityName) {
+          searchCityInfo.city = iten
+          searchCityInfo.group = currentCityGroup.value.cities[index].group
+        }
+      })
+    })
+  },
+  {
+    deep: true,
+  }
+)
+
 // tab切换
 const tabActive = ref()
 // 当前选项的城市数据
@@ -27,6 +49,7 @@ const currentCityGroup = computed(() => allCity.value[tabActive.value])
 
 // 点击取消按钮返回
 const cancelClick = () => {
+  searchValue.value = ''
   router.back()
 }
 
@@ -46,11 +69,13 @@ const cityClick = city => {
     show-action
     :clearable="false"
     @cancel="cancelClick"
+    autocomplete="off"
   />
   <van-tabs v-model:active="tabActive" color="orange">
     <template v-for="(value, key, index) in allCity" :key="key">
       <van-tab :title="value.title" :name="key">
         <div class="content">
+          <!-- 热门城市 -->
           <van-index-bar :index-list="indexList">
             <van-index-anchor index="热门"> </van-index-anchor>
             <div class="hotcity">
@@ -61,11 +86,28 @@ const cityClick = city => {
                 <span @click="cityClick(hotCity)">{{ hotCity.cityName }}</span>
               </template>
             </div>
-            <template v-for="(iten, indey) in currentCityGroup.cities">
+            <!-- 默认全部城市数据 -->
+            <template
+              v-for="(iten, indey) in currentCityGroup.cities"
+              :key="indey"
+              v-if="!searchValue"
+            >
               <van-index-anchor :index="iten.group" />
               <template v-for="(city, indev) in iten.cities" :key="indev">
                 <van-cell :title="city.cityName" @click="cityClick(city)" />
               </template>
+            </template>
+            <!-- 搜索匹配结果 -->
+            <template v-if="searchValue">
+              <van-index-anchor :index="searchCityInfo.group" />
+              <van-cell
+                :title="searchCityInfo.city.cityName"
+                @click="cityClick(searchCityInfo.city)"
+              />
+            </template>
+            <!-- 无搜索结果 -->
+            <template v-if="!searchCityInfo.group">
+              <van-empty image-size="80" description="暂无匹配结果" />
             </template>
           </van-index-bar>
         </div>

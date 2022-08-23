@@ -28,6 +28,42 @@ const positionClick = () => {
   )
 }
 
+const PriceFilter = ref(0)
+const PeopleCount = ref(-1)
+const StayTimeCount = ref(0)
+const Price = [
+  { text: '所有价格', value: 0 },
+  { text: '150以下', value: 1 },
+  { text: '150-300', value: 2 },
+  { text: '300-500', value: 3 },
+  { text: '500以上', value: 4 },
+]
+const People = [
+  { text: '人数不限', value: -1 },
+  { text: '1人', value: 0 },
+  { text: '2人', value: 1 },
+  { text: '3人及以上', value: 2 },
+]
+
+const Stay = [
+  {
+    text: '长期租赁',
+    value: 0,
+  },
+  {
+    text: '1天以内',
+    value: 1,
+  },
+  {
+    text: '2天以内',
+    value: 3,
+  },
+  {
+    text: '3天及以上',
+    value: 4,
+  },
+]
+
 // 日期
 const nowDate = new Date() // 今天
 const tomorrowDate = nowDate.setDate(nowDate.getDate() + 1) // 明天
@@ -38,7 +74,7 @@ const leaveDate = ref(formartMonthDay(tomorrowDate)) // 格式化后的结束日
 const stayTime = ref(1) // 停留几天（默认为一天）
 
 const show = ref(false)
-// 日期文案
+// 日期文案个性化定制
 const formatter = day => {
   const month = day.date.getMonth() + 1
   const date = day.date.getDate()
@@ -54,7 +90,7 @@ const formatter = day => {
 // 确定日期
 const onConfirm = date => {
   const [startTime, endTime] = date
-  stayTime.value = getDiffDate(startTime, endTime) // 计算停留时间 单位：天
+  stayTime.value = getDiffDate(startTime, endTime) // 计算停留时间 单位/天
   show.value = false
 }
 
@@ -65,13 +101,16 @@ const cityCilck = () => {
 
 <template>
   <!-- 位置信息 -->
-  <div class="location">
+  <div class="location section">
     <div class="city" @click="cityCilck">
-      {{ currentCity.cityName }}
+      <van-icon name="location-o" />{{ currentCity.cityName }}
     </div>
     <div class="position" @click="positionClick">
-      <span class="text">我的位置</span>
-      <img src="@/assets/img/home/icon_location.png" alt="" />
+      <span class="text">
+        我的位置
+        <van-icon name="guide-o" />
+      </span>
+      <!-- <img src="@/assets/img/home/icon_location.png" alt="" /> -->
     </div>
   </div>
   <!-- 日期范围 -->
@@ -98,14 +137,8 @@ const cityCilck = () => {
     :formatter="formatter"
     color="orange"
   />
-  <!-- 价格/人数选择 -->
-  <div class="section price-counter bottom-gray-line">
-    <div class="start">价格不限</div>
-    <div class="end">人数不限</div>
-  </div>
   <!-- 关键字 -->
-  <div class="section keyword bottom-gray-line">关键字/位置/民宿名</div>
-
+  <div class="section keyword bottom-gray-line">热门民宿</div>
   <!-- 热门建议 -->
   <div class="section hot-suggests">
     <template v-for="(item, index) in HotCity" :key="index">
@@ -120,6 +153,12 @@ const cityCilck = () => {
       </div>
     </template>
   </div>
+  <!-- 价格/人数选择 -->
+  <van-dropdown-menu :overlay="false" active-color="orange">
+    <van-dropdown-item v-model="PriceFilter" :options="Price" />
+    <van-dropdown-item v-model="PeopleCount" :options="People" />
+    <van-dropdown-item v-model="StayTimeCount" :options="Stay" />
+  </van-dropdown-menu>
 </template>
 
 <style scoped lang="less">
@@ -147,6 +186,10 @@ const cityCilck = () => {
       height: 18px;
     }
   }
+}
+:deep(.van-dropdown-menu__bar) {
+  box-shadow: none !important;
+  justify-content: space-between;
 }
 .section {
   display: flex;
