@@ -88,18 +88,43 @@ const formatter = day => {
 }
 
 // 确定日期
+const start = ref()
+const end = ref()
 const onConfirm = date => {
   const [startTime, endTime] = date
+  start.value = startTime
+  end.value = endTime
   stayTime.value = getDiffDate(startTime, endTime) // 计算停留时间 单位/天
   show.value = false
 }
 
+// 城市页面跳转
 const cityCilck = () => {
   router.push('/city')
+}
+// 搜索页面跳转
+const routerToSearchPage = () => {
+  router.push({
+    name: 'searchPage',
+    params: {
+      PriceFilter: PriceFilter.value,
+      PeopleCount: PeopleCount.value,
+      stayTime: stayTime.value,
+      start: start.value,
+      end: end.value,
+      currentCity: currentCity.value.cityName,
+    },
+  })
 }
 </script>
 
 <template>
+  <!-- 价格/人数选择 -->
+  <van-dropdown-menu :overlay="false" active-color="orange">
+    <van-dropdown-item v-model="PriceFilter" :options="Price" />
+    <van-dropdown-item v-model="PeopleCount" :options="People" />
+    <van-dropdown-item v-model="StayTimeCount" :options="Stay" />
+  </van-dropdown-menu>
   <!-- 位置信息 -->
   <div class="location section">
     <div class="city" @click="cityCilck">
@@ -110,7 +135,6 @@ const cityCilck = () => {
         我的位置
         <van-icon name="guide-o" />
       </span>
-      <!-- <img src="@/assets/img/home/icon_location.png" alt="" /> -->
     </div>
   </div>
   <!-- 日期范围 -->
@@ -153,12 +177,10 @@ const cityCilck = () => {
       </div>
     </template>
   </div>
-  <!-- 价格/人数选择 -->
-  <van-dropdown-menu :overlay="false" active-color="orange">
-    <van-dropdown-item v-model="PriceFilter" :options="Price" />
-    <van-dropdown-item v-model="PeopleCount" :options="People" />
-    <van-dropdown-item v-model="StayTimeCount" :options="Stay" />
-  </van-dropdown-menu>
+  <!-- 搜索按钮 -->
+  <div class="search-btn" @click="routerToSearchPage">
+    <div class="btn">开始搜索</div>
+  </div>
 </template>
 
 <style scoped lang="less">
@@ -264,6 +286,8 @@ const cityCilck = () => {
     border-radius: 20px;
     color: #fff;
     background-image: var(--theme-linear-gradient);
+    padding: 0 20px;
+    margin: 0 auto;
   }
 }
 </style>

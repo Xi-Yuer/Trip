@@ -6,3 +6,9 @@ export const getHotCity = async () => {
     })
     return result.data
 }
+export const getHomeCategories = async () => {
+    const result = await request.get({
+        url: '/home/categories'
+    })
+    return result.data
+}

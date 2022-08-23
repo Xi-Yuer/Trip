@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { getHotCity } from '@/service/modules/home'
+import { getHotCity, getHomeCategories } from '@/service/modules/home'
 
 export const useHomeStore = defineStore('home', {
     state: () => ({
@@ -11,6 +11,10 @@ export const useHomeStore = defineStore('home', {
         async getHotCity() {
             const result = await getHotCity()
             this.HotCity = result
+        },
+        async getCategories() {
+            const result = await getHomeCategories()
+            this.categories = result
         }
     }
 })

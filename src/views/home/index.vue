@@ -9,6 +9,7 @@ const homeStore = useHomeStore()
 
 // 请求热门城市数据
 homeStore.getHotCity()
+homeStore.getCategories()
 </script>
 
 <template>

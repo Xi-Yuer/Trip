@@ -2,4 +2,6 @@
   --primary-color: #ff9854;
   --van-search-left-icon-color: var(--primary-color) !important;
   --line-color: #faf8f9;
+  --theme-linear-gradient: linear-gradient(90deg, #fa8c1d, #fc8a8a);
+  --van-search-left-icon-color: var(--primary-color) !important;
 }
