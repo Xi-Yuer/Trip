@@ -1,27 +1,29 @@
 <script setup>
-defineProps({
+import { computed } from 'vue'
+const props = defineProps({
   house: {
     type: Object,
     default: () => ({}),
   },
 })
+const score = computed(()=> +props.house.commentScore)
 </script>
 
 <template>
   <div class="item">
-    <img :src="house.image.url" />
-    <dic class="describe">
+    <img :src="house?.image?.url" />
+    <div class="describe">
       <div class="summaryText">
-        <span>{{ house.summaryText }}</span>
+        <span>{{ house?.summaryText }}</span>
       </div>
       <div class="houseName">
-        <span>{{ house.houseName }}</span>
+        <span>{{ house?.houseName }}</span>
       </div>
       <div class="core-price">
-        <span class="core"><van-rate v-model="house.commentScore" color="orange" size="13px" /></span>
-        <span class="price">￥{{ house.finalPrice }}</span>
+        <span class="core"><van-rate v-model="score" color="orange" size="13px" /></span>
+        <span class="price">￥{{ house?.finalPrice }}</span>
       </div>
-    </dic>
+    </div>
   </div>
 </template>
 
@@ -32,6 +34,8 @@ defineProps({
   border-radius: 5px;
   color: white;
   background-color: white;
+  font-size: 15px;
+  overflow: hidden;
   img {
     width: 200px;
     height: 250px;

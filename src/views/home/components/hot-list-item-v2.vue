@@ -26,7 +26,7 @@ defineProps({
       <div class="price">
         <span class="finalPrice">￥{{ house.finalPrice }}</span>
         <span class="productPrice">￥{{ house.productPrice }}</span>
-        <span class="priceTipBadge">{{ house.priceTipBadge.text }}</span>
+        <span class="priceTipBadge">{{ house?.priceTipBadge?.text }}</span>
       </div>
     </div>
   </div>
@@ -37,7 +37,9 @@ defineProps({
   overflow: hidden;
   box-shadow: 0 0 10px 1px rgb(238, 238, 238);
   border-radius: 5px;
+  overflow: hidden;
   height: 250px;
+  font-size: 15px;
   img {
     width: 200px;
     height: 130px;
@@ -64,6 +66,7 @@ defineProps({
       display: flex;
       margin-top: 5px;
       align-items: flex-start;
+      justify-content: space-between;
       .finalPrice {
         color: #fa705e;
       }
@@ -74,8 +77,10 @@ defineProps({
         margin: 0 8px 0 0;
       }
       .priceTipBadge {
-        background-color: #e98f84;
+        background-color: #ffa500;
         font-size: 12px;
+        display: flex;
+        align-items: center;
         padding: 2px 8px;
         text-align: center;
         border-radius: 10px;

@@ -6,10 +6,12 @@ import { ref } from 'vue'
 
 import { formartMonthDay, getDiffDate } from '@/utils/format-time'
 import { useHomeStore } from '@/stores/modules/home'
+import useMainStore from '@/stores/modules/main.js'
 
 const router = useRouter()
 const homeStore = useHomeStore()
 const cityStore = useCityStore()
+const mainStore = useMainStore()
 
 const { currentCity } = storeToRefs(cityStore)
 
@@ -98,7 +100,10 @@ const onConfirm = date => {
 
   start.value = startTime
   end.value = endTime
-  
+
+  mainStore.startDate = startTime
+  mainStore.endDate = endTime
+
   stayTime.value = getDiffDate(startTime, endTime) // 计算停留时间 单位/天
   show.value = false
 }
