@@ -4,4 +4,7 @@
   --line-color: #faf8f9;
   --theme-linear-gradient: linear-gradient(90deg, #fa8c1d, #fc8a8a);
   --van-search-left-icon-color: var(--primary-color) !important;
+  --van-nav-bar-icon-color: var(--primary-color) !important;
+  --van-nav-bar-text-color: var(--primary-color) !important;
+  --van-nav-bar-title-text-color: var(--primary-color) !important;
 }

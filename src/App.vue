@@ -1,9 +1,14 @@
-<script setup></script>
+<script setup>
+import Loading from './components/loading/index.vue'
+</script>
 <template>
   <Suspense>
-    <router-view />
+    <div>
+      <router-view />
+      <Loading />
+    </div>
     <template #fallback>
-      <van-loading type="spinner" color="#1989fa" />
+      <Loading />
     </template>
   </Suspense>
 </template>

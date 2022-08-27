@@ -1,10 +1,22 @@
 <script setup>
 import { useHomeStore } from '@/stores/modules/home.js'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 import HotItemV1 from './hot-list-item-v1.vue'
 import HotItemV2 from './hot-list-item-v2.vue'
 
 const { hotList } = storeToRefs(useHomeStore())
+
+const router = useRouter()
+
+const redirectHouseDetailPage = data => {
+  router.push({
+    name: 'HouseDetail',
+    params: {
+      id: data.houseId,
+    },
+  })
+}
 </script>
 
 <template>
@@ -13,10 +25,16 @@ const { hotList } = storeToRefs(useHomeStore())
     <div class="list">
       <template v-for="(item, index) in hotList" :key="item.data.houseId">
         <template v-if="item.discoveryContentType === 9">
-          <HotItemV1 :house="item.data" />
+          <HotItemV1
+            :house="item.data"
+            @click="redirectHouseDetailPage(item.data)"
+          />
         </template>
         <template v-if="item.discoveryContentType === 3">
-          <HotItemV2 :house="item.data" />
+          <HotItemV2
+            :house="item.data"
+            @click="redirectHouseDetailPage(item.data)"
+          />
         </template>
       </template>
     </div>
