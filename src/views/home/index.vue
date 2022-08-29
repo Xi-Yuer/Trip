@@ -7,7 +7,7 @@ import SearchBar from '@/components/seaarch-bar/index.vue'
 import { useHomeStore } from '@/stores/modules/home'
 
 import { useScroll } from '@/hooks/useScroll.js'
-import { computed, watch } from 'vue'
+import { computed, onActivated, watch } from 'vue'
 const homeStore = useHomeStore()
 
 // 首页数据初始化
@@ -30,6 +30,19 @@ watch(
 
 // 是否显示顶部搜索栏
 const isShowSearchBar = computed(() => scrollTop.value >= 350)
+
+// 记录滚动的位置信息
+onActivated(() => {
+  window.scrollTo({
+    top: scrollTop.value,
+  })
+})
+</script>
+
+<script>
+export default {
+  name: 'home',
+}
 </script>
 
 <template>

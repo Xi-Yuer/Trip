@@ -19,7 +19,8 @@ const getTitle = str => {
 }
 
 // 获取类别索引
-const getCategoryIndex = item => swipeGroup[item.enumPictureCategory].findIndex( n => item === n) + 1
+const getCategoryIndex = item =>
+  swipeGroup[item.enumPictureCategory].findIndex(n => item === n) + 1
 </script>
 
 <template>
@@ -32,10 +33,17 @@ const getCategoryIndex = item => swipeGroup[item.enumPictureCategory].findIndex(
     <template #indicator="{ active, total }">
       <div class="custom-indicator">
         <template v-for="(swipeGropItem, key, index) in swipeGroup" :key="key">
-         <div class="category-item">
-              <span class="item" :class="{ active: swipe[active]?.enumPictureCategory == key }">{{ getTitle(swipeGropItem[0].title) }}</span>
-              <span class="count" v-if="swipe[active]?.enumPictureCategory == key">{{getCategoryIndex(swipe[active])}} / {{swipeGropItem.length}}</span>
-         </div>
+          <div class="category-item">
+            <span
+              class="item"
+              :class="{ active: swipe[active]?.enumPictureCategory == key }"
+              >{{ getTitle(swipeGropItem[0].title) }}</span
+            >
+            <span class="count" v-if="swipe[active]?.enumPictureCategory == key"
+              >{{ getCategoryIndex(swipe[active]) }} /
+              {{ swipeGropItem.length }}</span
+            >
+          </div>
         </template>
       </div>
     </template>
@@ -43,6 +51,10 @@ const getCategoryIndex = item => swipeGroup[item.enumPictureCategory].findIndex(
 </template>
 
 <style scoped lang="less">
+.my-swipe {
+  height: 277px;
+  overflow: hidden;
+}
 img {
   width: 100%;
 }
@@ -55,16 +67,16 @@ img {
   display: flex;
   align-items: center;
   .category-item {
-      margin: 0 5px 0 0;
-      border: 1px solid white;
-      .item {
-        color: white;
-        background: rgba(0, 0, 0, 0.514);
-      }
-      .active {
-        background-color: white;
-        color: black;
-      }
+    margin: 0 5px 0 0;
+    border: 1px solid white;
+    .item {
+      color: white;
+      background: rgba(0, 0, 0, 0.514);
+    }
+    .active {
+      background-color: white;
+      color: black;
+    }
   }
 }
 </style>

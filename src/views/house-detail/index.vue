@@ -18,13 +18,13 @@ import { useScroll } from '@/hooks/useScroll'
 const route = useRoute()
 const router = useRouter()
 // 房屋id
-const routeParamsHouseId = route.params.id || 51953704
+const routeParamsHouseId = route.params.id
 
 const { mainPart } = await getHouseDetail(routeParamsHouseId)
 
 const sectionEls = []
 const getSectionRef = val => {
-  sectionEls.push(val.$el)
+  sectionEls.push(val?.$el)
 }
 
 // tab控制
@@ -34,15 +34,22 @@ const showTabControl = computed(() => scrollTop.value > 300)
 const currentTab = ref(0)
 const tabBarRef = ref()
 
+let isClick = false
+let currentDistance = -1
+
 // 页面滚动匹配对应的tabBar
 watch(scrollTop, newValue => {
+  if (currentDistance < newValue) {
+    isClick = false
+  }
+  if (isClick) return
   // 获所有区域的 offsetTop 值
 
   const values = sectionEls.map(item => item.offsetTop)
   // 使用 newvalue 匹配最新的索引
   let index = values.length - 1 // 默认索引
   for (let i = 0; i < values.length; i++) {
-    if (values[i] >= newValue + 44) {
+    if (values[i] > newValue + 44) {
       index = i - 1
       break
     }
@@ -52,10 +59,12 @@ watch(scrollTop, newValue => {
 })
 
 const tabItemClick = index => {
+  isClick = true
   window.scrollTo({
     top: sectionEls[index].offsetTop - 44,
     behavior: 'smooth',
   })
+  currentDistance = sectionEls[index].offsetTop
 }
 
 // 返回
